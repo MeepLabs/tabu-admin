@@ -116,6 +116,8 @@ call %_CMD_%
 if "%ERRORLEVEL%" NEQ "0" echo Failed exitCode=%ERRORLEVEL%, command=%_CMD_%
 exit /b %ERRORLEVEL%
 
+echo Warning, there is a problem!
+
 :error
 endlocal
 echo An error has occurred during web site deployment.
