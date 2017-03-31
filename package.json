@@ -1,23 +1,21 @@
 {
-  "name": "nodejs-get-started",
+  "name": "TABu-Admin",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "body-parser": "~1.13.2",
-    "cookie-parser": "~1.3.5",
-    "debug": "~2.2.0",
-    "express": "~4.13.1",
-    "jade": "~1.11.0",
-    "morgan": "~1.6.1",
-    "serve-favicon": "~2.3.0"
-  },
-  "devDependencies": {
     "express-handlebars": "^3.0.0",
     "handlebars-registrar": "^1.5.2",
     "hbs": "^4.0.1",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "body-parser": "^1.17.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.2",
+    "morgan": "^1.8.1",
+    "serve-favicon": "^2.4.2"
+  },
+  "devDependencies": {
   }
 }
