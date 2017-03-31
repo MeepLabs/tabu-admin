@@ -43,6 +43,9 @@ if [[ ! -n "$NEXT_MANIFEST_PATH" ]]; then
   fi
 fi
 
+NEXT_MANIFEST_PATH=$ARTIFACTS/manifest
+PREVIOUS_MANIFEST_PATH=$NEXT_MANIFEST_PATH
+
 if [[ ! -n "$DEPLOYMENT_TARGET" ]]; then
   DEPLOYMENT_TARGET=$ARTIFACTS/wwwroot
 else
@@ -77,7 +80,7 @@ selectNodeVersion () {
       NODE_EXE=`cat "$DEPLOYMENT_TEMP/__nodeVersion.tmp"`
       exitWithMessageOnError "getting node version failed"
     fi
-    
+
     if [[ -e "$DEPLOYMENT_TEMP/__npmVersion.tmp" ]]; then
       NPM_JS_PATH=`cat "$DEPLOYMENT_TEMP/__npmVersion.tmp"`
       exitWithMessageOnError "getting npm version failed"
