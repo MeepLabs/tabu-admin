@@ -15,9 +15,9 @@
     "express-handlebars": "^3.0.0",
     "hbs": "^4.0.1",
     "morgan": "^1.8.1",
-    "serve-favicon": "^2.4.2"
+    "serve-favicon": "^2.4.2",
+    "debug": "^2.6.3"
   },
   "devDependencies": {
-    "debug": "^2.6.3"
   }
 }
