@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node ./bin/www"
   },
+  "engines":{"node":"5.11.0"},
   "dependencies": {
     "express-handlebars": "^3.0.0",
     "handlebars-registrar": "^1.5.2",
