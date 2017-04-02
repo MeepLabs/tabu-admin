@@ -6,8 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
-var test = require('./routes/test');
+var accounts = require('./routes/accounts');
+var payments = require('./routes/tab-payments');
 
 var handlebars = require('express-handlebars');
 var hbs = require('hbs');
@@ -31,8 +31,6 @@ hbs.registerPartial('header', fs.readFileSync(__dirname + '/src/partials/admin/h
 hbs.registerPartial('sidebar', fs.readFileSync(__dirname + '/src/partials/admin/sidebar.hbs', 'utf8'));
 hbs.registerPartial('admin-navigation', fs.readFileSync(__dirname + '/src/partials/admin/admin-navigation.hbs', 'utf8'));
 
-console.log(hbs.partials);
-
 app.engine('handlebars', handlebars({
     extname: 'hbs',
     defaultLayout: 'admin-layout',
@@ -53,8 +51,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use("/assets", express.static(path.join(__dirname, 'assets')));
 
 app.use('/', routes);
-app.use('/users', users);
-app.use('/test', test);
+app.use('/accounts', accounts);
+app.use('/payments', payments);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
