@@ -26,6 +26,7 @@ hbs.registerPartial('admin-assets-css-development', fs.readFileSync(__dirname + 
 hbs.registerPartial('admin-assets-js-development', fs.readFileSync(__dirname + '/src/partials/admin/assets/admin-assets-js-development.hbs', 'utf8'));
 hbs.registerPartial('admin-head', fs.readFileSync(__dirname + '/src/partials/admin/admin-head.hbs', 'utf8'));
 hbs.registerPartial('slidebars', fs.readFileSync(__dirname + '/src/partials/admin/slidebars.hbs', 'utf8'));
+hbs.registerPartial('main-elements', fs.readFileSync(__dirname + '/src/partials/admin/main-elements.hbs', 'utf8'));
 hbs.registerPartial('header', fs.readFileSync(__dirname + '/src/partials/admin/header.hbs', 'utf8'));
 hbs.registerPartial('sidebar', fs.readFileSync(__dirname + '/src/partials/admin/sidebar.hbs', 'utf8'));
 hbs.registerPartial('admin-navigation', fs.readFileSync(__dirname + '/src/partials/admin/admin-navigation.hbs', 'utf8'));

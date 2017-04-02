@@ -36,8 +36,7 @@
             .filter(function (d) {
                 return d !== undefined && d !== null;
             })
-            .value()
-            .sort(d3.ascending);
+            .value();
     }
 
     _scales.ordinal = function (data, axis, bounds, extents) {
