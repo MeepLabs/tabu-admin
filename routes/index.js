@@ -12,7 +12,8 @@ function render(res, counts) {
   res.render('admin-layout.hbs', { title: "Tabs Closed",
   counts: JSON.stringify(counts),
   goals: JSON.stringify([0,0,0,0,0,0,0,0,0,0,0,0]),
-  total: total });
+  total: total,
+  icon: "icon-linecons-note" });
 }
 
 /* GET home page. */

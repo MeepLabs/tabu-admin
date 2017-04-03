@@ -12,7 +12,8 @@ function render(res, counts) {
   res.render('admin-layout.hbs', { title: "Tab Payments ($)",
   counts: JSON.stringify(counts),
   goals: JSON.stringify([0,0,0,0,0,0,0,0,0,0,0,0]),
-  total: total});
+  total: total,
+  icon: "icon-linecons-money"});
 }
 
 /* GET home page. */
