@@ -9,7 +9,7 @@ $(function() {
     window.onload = function() {
         var g1 = new JustGage({
             id: "g1",
-            value: {{counts}}[0],
+            value: {{counts}}[2],
             min: 0,
             max: 100,
             title: "{{title}} MT D",
@@ -39,8 +39,8 @@ $(function() {
                       Total {{title}}
                       <div id="change" class="float-right">
                           <script>
-                            var current = {{counts}}[0],
-                            past = {{counts}}[1],
+                            var current = {{counts}}[2],
+                            past = {{counts}}[3],
                             str,
                             percentage = Math.round((1-(current/past))*100);
                             if (current > past) {
@@ -117,7 +117,8 @@ $(function() {
                               {"y":{{counts}}[3],"x":-3},
                               {"y":{{counts}}[4],"x":-4},
                               {"y":{{counts}}[5],"x":-5},
-                              {"y":{{counts}}[6],"x":-6}
+                              {"y":{{counts}}[6],"x":-6},
+                              {"y":{{counts}}[7],"x":-7}
                             ]},
                             {"className":".main.l2","data":[
                               {"y":{{goals}}[0],"x":0},
@@ -126,15 +127,16 @@ $(function() {
                               {"y":{{goals}}[3],"x":-3},
                               {"y":{{goals}}[4],"x":-4},
                               {"y":{{goals}}[5],"x":-5},
-                              {"y":{{goals}}[6],"x":-6}
+                              {"y":{{goals}}[6],"x":-6},
+                              {"y":{{goals}}[7],"x":-7}
                             ]}
                             ],"type":"bar","yScale":"linear"}];
                         var i = 0,
                         now = new Date(),
-                        month = now.getMonth(),
+                        month = now.getMonth() + 2,
                         year = now.getYear() + 1900,
-                        months = ["January", "February", "March", "April", "May", "June",
-                         "July", "August", "September", "October", "November", "December"
+                        months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
                        ],
                                 chart = new xChart('line-dotted', data[i], '#chart-example', {
                                     axisPaddingTop: 5,

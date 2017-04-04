@@ -22,8 +22,8 @@ router.get('/', function(req, res, next) {
   var counts = [];
   for(count = 0; count < 12; count++){
     var now = new Date();
-    var endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1 - count)  / 1000;;
-    var startOfMonth = new Date(now.getFullYear(), now.getMonth() - count) / 1000;
+    var endOfMonth = new Date(now.getFullYear(), now.getMonth() + 3 - count)  / 1000;;
+    var startOfMonth = new Date(now.getFullYear(), now.getMonth() + 2 - count) / 1000;
     db.query(`SELECT COUNT(*) from tab_payments WHERE created_at > ${startOfMonth} AND created_at < ${endOfMonth}`, function(err, rows, fields) {
       if (!err) {
         counts.push(rows[0]["COUNT(*)"]);
