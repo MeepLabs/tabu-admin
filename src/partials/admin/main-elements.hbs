@@ -3,6 +3,14 @@
 <script type="text/javascript" src="../../assets/js-core/d3.js"></script>
 <script type="text/javascript" src="../../assets/widgets/charts/xcharts/xcharts.js"></script>
 <script>
+
+function truncate(string){
+   if (string.length > 12)
+      return string.substring(0,12);
+   else
+      return string;
+};
+
 $(function() {
     "use strict";
     var g1;
@@ -13,7 +21,7 @@ $(function() {
             min: 0,
             max: {{goals}}[2],
             title: "{{title}} MT D",
-            label: "{{title}}"
+            label: truncate("{{title}}")
         });
         // setInterval(function() {
         //     g1.refresh(getRandomInt(50, 100));
