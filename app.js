@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var accounts = require('./routes/accounts');
 var payments = require('./routes/tab-payments');
+var venues = require('./routes/venues');
 
 var handlebars = require('express-handlebars');
 var hbs = require('hbs');
@@ -53,6 +54,7 @@ app.use("/assets", express.static(path.join(__dirname, 'assets')));
 app.use('/', routes);
 app.use('/accounts', accounts);
 app.use('/payments', payments);
+app.use('/venues', venues);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
