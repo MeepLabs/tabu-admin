@@ -9,12 +9,32 @@ function render(res, counts) {
   for (var i in counts) {
     total += counts[i];
   }
-  res.render('admin-layout.hbs', { title: "Tab Payments ($)",
+  res.render('tab-layout.hbs', { title: "Tab Payments ($)",
   counts: JSON.stringify(counts),
   goals: JSON.stringify([6600,4000,2700,500,300,100,0,0,0,0,0,0]),
   total: total,
   icon: "icon-linecons-money"});
 }
+
+function round(value, exp) {
+  if (typeof exp === 'undefined' || +exp === 0)
+    return Math.round(value);
+
+  value = +value;
+  exp = +exp;
+
+  if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0))
+    return NaN;
+
+  // Shift
+  value = value.toString().split('e');
+  value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp)));
+
+  // Shift back
+  value = value.toString().split('e');
+  return +(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
+}
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -26,7 +46,7 @@ router.get('/', function(req, res, next) {
     var startOfMonth = new Date(now.getFullYear(), now.getMonth() + 2 - count) / 1000;
     db.query(`SELECT SUM(amount) from tab_payments WHERE created_at > ${startOfMonth} AND created_at < ${endOfMonth}`, function(err, rows, fields) {
       if (!err) {
-        counts.push(Math.round(rows[0]["SUM(amount)"] * 100)/100);
+        counts.push(round(rows[0]["SUM(amount)"], 2));
         if (counts.length >= 12) {
           render(res, counts);
         }

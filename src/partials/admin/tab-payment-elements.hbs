@@ -1,0 +1,237 @@
+<script type="text/javascript" src="../../assets/js-core/raphael.js"></script>
+<script type="text/javascript" src="../../assets/widgets/charts/justgage/justgage.js"></script>
+<script type="text/javascript" src="../../assets/js-core/d3.js"></script>
+<script type="text/javascript" src="../../assets/widgets/charts/xcharts/xcharts.js"></script>
+<script>
+
+function truncate(string){
+   if (string.length > 12)
+      return string.substring(0,12);
+   else
+      return string;
+};
+
+$(function() {
+    "use strict";
+    var g1;
+    window.onload = function() {
+        var g1 = new JustGage({
+            id: "g1",
+            value: {{counts}}[2],
+            min: 0,
+            max: {{goals}}[2],
+            title: "{{title}} MT D",
+            label: truncate("{{title}}")
+        });
+        // setInterval(function() {
+        //     g1.refresh(getRandomInt(50, 100));
+        // }, 2500);
+    };
+});
+</script>
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel">
+            <div class="panel-body">
+                <div class="pad10A">
+                    <div id="g1" class="md-gauge"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel">
+            <div class="panel-body">
+              <div class="tile-box bg-blue">
+                  <div class="tile-header">
+                      Average Tip Percentage
+                      
+                  </div>
+                  <div class="tile-content-wrapper">
+                      <i class="glyph-icon {{icon}}"></i>
+                      <div class="tile-content">
+                          17.04%
+                      </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel">
+            <div class="panel-body">
+              <div class="tile-box bg-blue">
+                  <div class="tile-header">
+                      Total {{title}}
+                      <div id="change" class="float-right">
+                          <script>
+                            var current = {{counts}}[2],
+                            past = {{counts}}[3],
+                            str,
+                            percentage = Math.round((1-(current/past))*100);
+                            if (current > past) {
+                              str = '<i class="glyph-icon icon-caret-up"></i> ' + percentage + '% MT D';
+                            } else {
+                              str = '<i class="glyph-icon icon-caret-down"></i> ' + percentage + '% MT D';
+                            }
+                            $("#change").html(str);
+                          </script>
+                      </div>
+                  </div>
+                  <div class="tile-content-wrapper">
+                      <i class="glyph-icon {{icon}}"></i>
+                      <div class="tile-content">
+                          {{total}}
+                      </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel">
+        <div class="panel-body">
+            <!-- <h3 class="title-hero">
+                Switch buttons
+            </h3> -->
+            <div class="example-box-wrapper">
+                <div class="content-box border-top border-blue-alt mrg25B">
+                    <h3 class="content-box-header">
+                        {{title}}
+                        <small>(Year to Date)</small>
+                    <span class="btn-group btn-group-sm float-right" data-toggle="buttons">
+                        <!-- <a href="#" class="btn btn-default">
+                            <input name="radio-toggle-1" type="radio">
+                            Weekly
+                        </a>
+                        <a href="#" class="btn btn-default">
+                            <input name="radio-toggle-2" type="radio">
+                            Monthly
+                        </a>
+                        <a href="#" class="btn btn-default">
+                            <input name="radio-toggle-3" type="radio">
+                            Yearly
+                        </a> -->
+                    </span>
+                    </h3>
+                    <div class="content-box-wrapper">
+                        <figure style="width: 95%; margin: 0 auto; display: block; height: 300px;" id="chart-example"></figure>
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+
+                function mod(n, m) {
+      return ((n % m) + m) % m;
+}
+                    (function () {
+
+                        var tt = document.createElement('div'),
+                                leftOffset = -(~~$('html').css('padding-left').replace('px', '') + ~~$('body').css('margin-left').replace('px', '')),
+                                topOffset = -32;
+                        tt.className = 'tooltip top fade in';
+                        document.body.appendChild(tt);
+
+                        var data = [
+                          {"xScale":"ordinal","comp":[],"main":[
+                            {"className":".main.l1","data":[
+                              {"y":{{counts}}[0],"x":0},
+                              {"y":{{counts}}[1],"x":-1},
+                              {"y":{{counts}}[2],"x":-2},
+                              {"y":{{counts}}[3],"x":-3},
+                              {"y":{{counts}}[4],"x":-4},
+                              {"y":{{counts}}[5],"x":-5},
+                              {"y":{{counts}}[6],"x":-6}
+                            ]},
+                            {"className":".main.l2","data":[
+                              {"y":{{goals}}[0],"x":0},
+                              {"y":{{goals}}[1],"x":-1},
+                              {"y":{{goals}}[2],"x":-2},
+                              {"y":{{goals}}[3],"x":-3},
+                              {"y":{{goals}}[4],"x":-4},
+                              {"y":{{goals}}[5],"x":-5},
+                              {"y":{{goals}}[6],"x":-6}
+                            ]}
+                            ],"type":"bar","yScale":"linear"}];
+                        var i = 0,
+                        now = new Date(),
+                        month = now.getMonth() + 2,
+                        year = now.getYear() + 1900,
+                        months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                       ],
+                                chart = new xChart('line-dotted', data[i], '#chart-example', {
+                                    axisPaddingTop: 5,
+                                    dataFormatX: function (x) {
+                                      var index = mod(month + x, 12);
+                                      var yr = year;
+                                      if (month + x < 0) {
+                                        yr = yr - 1;
+                                      }
+                                      return months[index] + " " + yr;
+                                    },
+                                    sortX: function(a, b) {
+                                      let aSplit = a.x.split(" ");
+                                      let bSplit = b.x.split(" ");
+                                      let aMo = aSplit[0];
+                                      let aYr = aSplit[1];
+                                      let bMo = bSplit[0];
+                                      let bYr = bSplit[1];
+                                      if (aYr > bYr)
+                                          return 1;
+                                      if (aYr < bYr)
+                                          return -1;
+                                      if (months.indexOf(aMo) + month > months.indexOf(bMo) + month)
+                                          return 1;
+                                      if (months.indexOf(aMo) + month < months.indexOf(bMo) + month)
+                                          return -1;
+                                      return 0;
+                                    },
+                                    tickFormatX: function (x) {
+                                        return x;
+                                    },
+                                    mouseover: function (d, i) {
+                                        var pos = $(this).offset();
+                                        $(tt).html('<div class="arrow"></div><div class="tooltip-inner">' + (d.x) + ': ' + d.y+'</div>')
+                                                .css({top: topOffset + pos.top, left: pos.left + leftOffset})
+                                                .show();
+                                    },
+                                    mouseout: function (x) {
+                                        $(tt).hide();
+                                    },
+                                    timing: 1250
+                                }),
+                                rotateTimer,
+                                toggles = d3.selectAll('#upd-chart a'),
+                                t = 3500;
+
+                        function updateChart(i) {
+                            var d = data[i];
+                            chart.setData(d);
+                            toggles.classed('active', function () {
+                                return (d3.select(this).attr('data-type') === d.type);
+                            });
+                            return d;
+                        }
+
+                        toggles.on('click', function (d, i) {
+                            clearTimeout(rotateTimer);
+                            updateChart(i);
+                        });
+
+                        // function rotateChart() {
+                        //     i += 1;
+                        //     i = (i >= order.length) ? 0 : i;
+                        //     var d = updateChart(order[i]);
+                        //     rotateTimer = setTimeout(rotateChart, t);
+                        // }
+                        // rotateTimer = setTimeout(rotateChart, t);
+                    }());
+                </script>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
