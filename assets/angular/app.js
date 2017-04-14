@@ -671,3 +671,7 @@ monarchApp.controller('view-profileController', function($scope){
 
 });
 
+monarchApp.controller('authenticationController', function($scope) {
+
+});
+
