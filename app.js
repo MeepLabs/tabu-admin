@@ -9,6 +9,7 @@ var routes = require('./routes/index');
 var accounts = require('./routes/accounts');
 var payments = require('./routes/tab-payments');
 var venues = require('./routes/venues');
+var authenticate = require('./routes/authenticate');
 
 var handlebars = require('express-handlebars');
 var hbs = require('hbs');
@@ -16,6 +17,8 @@ var fs = require('fs');
 var debug = require('debug');
 var router = express.Router();
 
+// Add the configuration file.
+var config = require('./conf/serverConf');
 var app = express();
 
 // // view engine setup
@@ -50,8 +53,37 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use("/assets", express.static(path.join(__dirname, 'assets')));
+app.use(express.static(path.join(__dirname, 'public'), {maxAge: config.ASSETS_MAX_AGE}));
+app.use("/assets", express.static(path.join(__dirname, 'assets'), {maxAge: config.ASSETS_MAX_AGE}));
+
+
+// API to verify the PIN entered by the user. On successful verification it will set the pin in the cookie.
+// For subsequent requests based on this cookie we can authenticate the requests.
+app.post('/api/verifyPin/', function (req, res, next) {
+  var pin = req.body.pin;
+  if (pin == config.SECRET_PIN) {
+    res.cookie(config.COOKIE_NAME, config.SECRET_PIN, {
+      maxAge: config.COOKIE_AGE
+    });
+    res.status(200).json(JSON.stringify({isVerified: true}));
+  } else {
+    res.status(401).json(JSON.stringify({isVerified: false}));
+  }
+  return;
+});
+
+app.use('/authenticate', authenticate);
+
+// If user is not authenticated then redirect him to authentication page.Placemnet of this middleware is important.
+// It needs to be below /authenticate route and above other routes
+app.use(function (req, res, next) {
+    var _pin = req.cookies[config.COOKIE_NAME];
+    if (_pin == config.SECRET_PIN) {
+      next();
+    } else {
+      res.redirect('/authenticate', 302);
+    }
+});
 
 app.use('/', routes);
 app.use('/accounts', accounts);
