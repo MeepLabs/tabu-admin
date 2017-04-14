@@ -17,7 +17,7 @@ function render(res, counts) {
         title: "Tab Payments ($)",
         counts: JSON.stringify(counts),
         goals: JSON.stringify([6600, 4000, 2700, 500, 300, 100, 0, 0, 0, 0, 0, 0]),
-        total: total,
+        total: round(total),
         icon: "icon-linecons-money"
     });
 }
