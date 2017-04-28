@@ -19,7 +19,9 @@
     "morgan": "^1.8.1",
     "mysql": "^2.13.0",
     "nodemon": "^1.11.0",
-    "serve-favicon": "^2.4.2"
+    "serve-favicon": "^2.4.2",
+    "http-status": "^1.0.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+  }
 }
