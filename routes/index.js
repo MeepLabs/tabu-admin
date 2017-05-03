@@ -17,7 +17,7 @@ function render(res, counts) {
     res.render('admin-layout.hbs', {
         title: "Tabs Closed",
         counts: JSON.stringify(counts),
-        goals: JSON.stringify([0, 300, 200, 150, 50, 30, 20, 10, 0, 0, 0, 0]),
+        goals: JSON.stringify([500, 300, 200, 150, 50, 30, 20, 10, 0, 0, 0, 0]),
         total: total,
         icon: "icon-linecons-note"
     });

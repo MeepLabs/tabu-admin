@@ -16,7 +16,7 @@ function render(res, counts) {
     res.render('tab-layout.hbs', {
         title: "Tab Payments ($)",
         counts: JSON.stringify(counts),
-        goals: JSON.stringify([0, 6600, 4000, 2700, 500, 300, 100, 0, 0, 0, 0, 0]),
+        goals: JSON.stringify([7500, 6600, 4000, 2700, 500, 300, 100, 0, 0, 0, 0, 0]),
         total: round(total),
         icon: "icon-linecons-money"
     });
