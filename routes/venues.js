@@ -17,7 +17,7 @@ function render(res, counts) {
     res.render('admin-layout.hbs', {
         title: "Venues",
         counts: JSON.stringify(counts),
-        goals: JSON.stringify([20, 10, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+        goals: JSON.stringify([0, 20, 10, 6, 0, 0, 0, 0, 0, 0, 0, 0]),
         total: total,
         icon: "icon-linecons-money"
     });
