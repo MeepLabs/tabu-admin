@@ -1,89 +1,65 @@
 var express = require('express');
 var handlebars = require('express-handlebars');
 var hbs = require('hbs');
-const db = require('../db/')
 var router = express.Router();
 
-var cache = require('memory-cache');
 var conf = require('../conf/serverConf');
+
+var $ = require('jquery-deferred');
+var $g = require('../global/');
+
 var category = 'PAYMENTS';
-
-function render(res, counts) {
-    var total = 0;
-    for (var i in counts) {
-        total += counts[i];
-    }
-    res.render('tab-layout.hbs', {
-        title: "Tab Payments ($)",
-        counts: JSON.stringify(counts),
-        goals: JSON.stringify([7500, 6600, 4000, 2700, 500, 300, 100, 0, 0, 0, 0, 0]),
-        total: round(total),
-        icon: "icon-linecons-money"
-    });
-}
-
-function round(value, exp) {
-    if (typeof exp === 'undefined' || +exp === 0)
-        return Math.round(value);
-
-    value = +value;
-    exp = +exp;
-
-    if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0))
-        return NaN;
-
-    // Shift
-    value = value.toString().split('e');
-    value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp)));
-
-    // Shift back
-    value = value.toString().split('e');
-    return +(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
-}
-
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
     var completed = 0;
     var counts = [];
+	var globalStats = null;
+	var generalStats = null;
+	
     var shouldCache = conf.CACHED_QUERIES[category] == true;
+	$g.setRes(res);
+	$g.setCache(shouldCache);
+	
+	function countCallback(rows) {
+		counts.push($g.round(rows[0]["sum"], 2));
+	}
+
+	var defStack = [];
+	
     for (count = 0; count < 12; count++) {
         var now = new Date();
         var endOfMonth = new Date(now.getFullYear(), now.getMonth() + 3 - count) / 1000;
         var startOfMonth = new Date(now.getFullYear(), now.getMonth() + 2 - count) / 1000;
-        var query = `SELECT SUM(amount) from tab_payments WHERE created_at > ${startOfMonth} AND created_at < ${endOfMonth}`;
+        var query = `SELECT SUM(amount) sum from tab_payments WHERE created_at > ${startOfMonth} AND created_at < ${endOfMonth}`;
 
-        // Check whether this query is cachable. If result is present in cache then continue with the loop
-        if (shouldCache && cache.get(query)) {
-            processQueryResult(cache.get(query).rows);
-        } else {
-            queryDBAndCache(query);
-        }
-
-        // Create below functions as closure because loop will run for all the index at once so need to make the variables local to the function.
-        function processQueryResult(rows) {
-            counts.push(round(rows[0]["SUM(amount)"], 2));
-            if (counts.length >= 12) {
-                render(res, counts);
-            }
-        }
-
-        function queryDBAndCache(queryString) {
-            db.query(queryString, function (err, rows, fields) {
-                if (!err) {
-                    if (shouldCache) {
-                        cache.put(queryString, {
-                            rows: rows,
-                            fields: fields
-                        }, conf.PAGE_MAX_AGE);
-                    }
-                    processQueryResult(rows);
-                } else {
-                    res.send('Error while performing Query.', err);
-                }
-            });
-        }
+        defStack.push($g.query(query, countCallback)); //add to promise stack
     }
+	
+	defStack.push($g.getGeneralStats(function (obj) {
+		generalStats = obj;
+	}));
+	defStack.push($g.getGlobalStats(function (obj) {
+		globalStats = obj;
+	}));
+	
+	$.when.apply($, defStack).then(function() {
+		var total = 0;
+		for (var i in counts) {
+			total += counts[i];
+		}
+		res.render('tab-layout.hbs', {
+			title: "Tab Payments ($)",
+			globalStats: JSON.stringify(globalStats),
+			generalStats: JSON.stringify(generalStats),
+			counts: JSON.stringify(counts),
+			goals: JSON.stringify([7500, 6600, 4000, 2700, 500, 300, 100, 0, 0, 0, 0, 0]),
+			total: $g.round(total),
+			icon: "icon-linecons-money"
+		});
+	}).fail(function(err) {
+		res.send(err);
+	});
 });
 
 module.exports = router;
