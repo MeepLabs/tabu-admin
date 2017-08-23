@@ -16,17 +16,17 @@ router.get('/', function (req, res, next) {
     var counts = [];
 	var globalStats = null;
 	var generalStats = null;
-	
+
     var shouldCache = conf.CACHED_QUERIES[category] == true;
 	$g.setRes(res);
 	$g.setCache(shouldCache);
-	
+
 	function countCallback(rows) {
 		counts.push($g.round(rows[0]["sum"], 2));
 	}
 
 	var defStack = [];
-	
+
     for (count = 0; count < 12; count++) {
         var now = new Date();
         var endOfMonth = new Date(now.getFullYear(), now.getMonth() + 3 - count) / 1000;
@@ -35,14 +35,14 @@ router.get('/', function (req, res, next) {
 
         defStack.push($g.query(query, countCallback)); //add to promise stack
     }
-	
+
 	defStack.push($g.getGeneralStats(function (obj) {
 		generalStats = obj;
 	}));
 	defStack.push($g.getGlobalStats(function (obj) {
 		globalStats = obj;
 	}));
-	
+
 	$.when.apply($, defStack).then(function() {
 		var total = 0;
 		for (var i in counts) {
@@ -53,7 +53,17 @@ router.get('/', function (req, res, next) {
 			globalStats: JSON.stringify(globalStats),
 			generalStats: JSON.stringify(generalStats),
 			counts: JSON.stringify(counts),
-			goals: JSON.stringify([7500, 6600, 4000, 2700, 500, 300, 100, 0, 0, 0, 0, 0]),
+			goals: JSON.stringify([12000, 2300, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+
+      // Sept 15 - 2300
+      // Oct 15 - 12000
+      // 18 * 2 * 750
+      // Nov 15 - 27000
+      // Dec 15 - 42000
+      // Jan 15 - 57000
+      // Feb 15 - 72000
+      // May 15 - 87000
+
 			total: $g.round(total),
 			icon: "icon-linecons-money"
 		});

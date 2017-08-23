@@ -53,10 +53,17 @@ router.get('/', function (req, res, next) {
 			globalStats: JSON.stringify(globalStats),
 			generalStats: JSON.stringify(generalStats),
 			counts: JSON.stringify(counts),
-			goals: JSON.stringify([1000, 600, 400, 200, 100, 75, 60, 30, 0, 0, 0, 0]),
+			goals: JSON.stringify([250, 100, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
 			total: total,
 			icon: "icon-linecons-user"
 		});
+
+    // Sept 15 - 100
+    // Oct 15 - 250
+    // Nov 15 - 300
+    // Dec 15 - 600
+    // Jan 15 - 900
+    // Feb 15 - 1200
 	}).fail(function(err) {
 		res.send(err);
 	});

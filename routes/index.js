@@ -53,7 +53,7 @@ router.get('/', function (req, res, next) {
 			counts: JSON.stringify(counts),
 			globalStats: JSON.stringify(globalStats),
 			generalStats: JSON.stringify(generalStats),
-			goals: JSON.stringify([500, 300, 200, 150, 50, 30, 20, 10, 0, 0, 0, 0]),
+			goals: JSON.stringify([360, 160, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
 			total: total,
 			icon: "icon-linecons-note"
 		});

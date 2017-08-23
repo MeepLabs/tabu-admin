@@ -31,7 +31,7 @@ router.get('/', function (req, res, next) {
         var now = new Date();
         var endOfMonth = new Date(now.getFullYear(), now.getMonth() + 3 - count) / 1000;
         var startOfMonth = new Date(now.getFullYear(), now.getMonth() + 2 - count) / 1000;
-        var query = `SELECT COUNT(*) total from venues WHERE created_at > ${startOfMonth} AND created_at < ${endOfMonth}`;
+        var query = `SELECT COUNT(*) total from venues WHERE created_at > ${startOfMonth} AND created_at < ${endOfMonth} AND active = 1`;
 
 		defStack.push($g.query(query, countCallback)); //add to promise stack
 	}
@@ -53,10 +53,19 @@ router.get('/', function (req, res, next) {
 			globalStats: JSON.stringify(globalStats),
 			generalStats: JSON.stringify(generalStats),
 			counts: JSON.stringify(counts),
-			goals: JSON.stringify([25, 20, 10, 6, 0, 0, 0, 0, 0, 0, 0, 0]),
+			goals: JSON.stringify([18, 8, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
 			total: total,
 			icon: "icon-linecons-money"
 		});
+
+    // Sept 15 - 8
+    // Oct 15 - 18
+    // Nov 15 - 28
+    // Dec 15 - 38
+    // Jan 15 - 48
+    // Feb 15 - 58
+    // May 15 - 68
+
 	}).fail(function(err) {
 		res.send(err);
 	});
